@@ -2,14 +2,14 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# ---------------- PAGE CONFIG ----------------
+
 st.set_page_config(
     page_title="Employee Analytics Dashboard",
     page_icon="📊",
     layout="wide"
 )
 
-# ---------------- CUSTOM CSS ----------------
+
 st.markdown("""
 <style>
 body {
@@ -25,14 +25,14 @@ div[data-testid="metric-container"] {
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- LOAD DATA ----------------
+
 @st.cache_data
 def load_data():
     return pd.read_csv("employee_data.csv")
 
 df = load_data()
 
-# ---------------- SIDEBAR FILTERS ----------------
+
 st.sidebar.header("🔍 Filters")
 
 department = st.sidebar.multiselect(
@@ -60,18 +60,18 @@ rating_range = st.sidebar.slider(
 if st.sidebar.button("🔄 Reset Filters"):
     st.experimental_rerun()
 
-# ---------------- FILTER DATA ----------------
+
 filtered_df = df[
     (df["DepartmentType"].isin(department)) &
     (df["EmployeeStatus"].isin(status)) &
     (df["Current Employee Rating"].between(rating_range[0], rating_range[1]))
 ]
 
-# ---------------- MAIN TITLE ----------------
+
 st.title("📊 Employee Analytics Dashboard")
 st.caption("Interactive HR Analytics Dashboard using Streamlit & Plotly")
 
-# ---------------- KPI ROW ----------------
+
 col1, col2, col3 = st.columns(3)
 
 total_emp = len(filtered_df)
@@ -84,7 +84,7 @@ col3.metric("Avg Performance Rating", avg_rating)
 
 st.divider()
 
-# ---------------- CHART 1 ----------------
+
 st.subheader("Employees by Department")
 
 dept_count = filtered_df["DepartmentType"].value_counts().reset_index()
@@ -100,7 +100,7 @@ fig1 = px.bar(
 fig1.update_layout(transition_duration=600)
 st.plotly_chart(fig1, use_container_width=True)
 
-# ---------------- CHART 2 ----------------
+
 st.subheader("Performance Score Distribution")
 
 perf_count = filtered_df["Performance Score"].value_counts().reset_index()
@@ -115,7 +115,7 @@ fig2 = px.pie(
 fig2.update_layout(transition_duration=600)
 st.plotly_chart(fig2, use_container_width=True)
 
-# ---------------- CHART 3 ----------------
+
 st.subheader("Employee Type Breakdown")
 
 type_count = filtered_df["EmployeeType"].value_counts().reset_index()
@@ -131,7 +131,7 @@ fig3 = px.bar(
 fig3.update_layout(transition_duration=600)
 st.plotly_chart(fig3, use_container_width=True)
 
-# ---------------- CHART 4 ----------------
+
 st.subheader("Average Performance Rating by Department")
 
 dept_perf = (
@@ -151,7 +151,7 @@ fig4 = px.bar(
 fig4.update_layout(transition_duration=600)
 st.plotly_chart(fig4, use_container_width=True)
 
-# ---------------- EMPLOYEE TABLE ----------------
+
 st.subheader("Employee Details (Drill-Down View)")
 
 st.dataframe(
@@ -167,6 +167,7 @@ st.dataframe(
     use_container_width=True
 )
 
-# ---------------- FOOTER ----------------
+
 st.markdown("---")
-st.caption("📌 Built using Streamlit & Plotly | HR Analytics Project")
+st.caption(" Built using Streamlit & Plotly | HR Analytics Project")
+
